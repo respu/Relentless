@@ -6,8 +6,8 @@ namespace Relentless
     {
         static void Main()
         {
-            Console.Title = "Relentless - Version 0.103.0";
-            Console.WriteLine("Relentless - Version 0.103.0: Public repository build");
+            Console.Title = "Relentless - Version 0.105.0";
+            Console.WriteLine("Relentless - Version 0.105.0: Public repository build");
 
             Initialise.Configuration();
             Initialise.Rooms();

@@ -165,6 +165,7 @@ namespace Relentless.Network
 
             switch (selectPreconstructed.resourceType)
             {
+                case "DECAY":  { resourceId = 4; break; }
                 case "ENERGY": { resourceId = 1; break; }
                 case "GROWTH": { resourceId = 2; break; }
                 case "ORDER":  { resourceId = 3; break; }

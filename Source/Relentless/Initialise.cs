@@ -63,6 +63,10 @@ namespace Relentless
 
                 Variables.cardTypeMap.Add(cardType.id, cardType);
 
+                if (cardType.costDecay != 0)
+                {
+                    Variables.cardTypeDecayMap.Add(cardType.id, cardType);
+                }
                 if (cardType.costEnergy != 0)
                 {
                     Variables.cardTypeEnergyMap.Add(cardType.id, cardType);
@@ -77,8 +81,8 @@ namespace Relentless
                 }
             }
 
-            Console.WriteLine("Card Types     - Loaded {0} ({1} Energy, {2} Growth, {3} Order)",
-                Variables.cardTypeMap.Count, Variables.cardTypeEnergyMap.Count, Variables.cardTypeGrowthMap.Count, Variables.cardTypeOrderMap.Count);
+            Console.WriteLine("Card Types     - Loaded {0} ({1} Decay, {2} Energy, {3} Growth, {4} Order)",
+                Variables.cardTypeMap.Count, Variables.cardTypeDecayMap.Count, Variables.cardTypeEnergyMap.Count, Variables.cardTypeGrowthMap.Count, Variables.cardTypeOrderMap.Count);
 
             SQLResult deckTypeResult = DB.Database.Select(Variables.connection, false, false, "SELECT * FROM deck_types");
 
