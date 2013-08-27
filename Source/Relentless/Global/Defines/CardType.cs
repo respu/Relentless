@@ -30,6 +30,10 @@
 
         public string GetResourceType()
         {
+            if (costDecay != 0)
+            {
+                return "DECAY";
+            }
             if (costEnergy != 0)
             {
                 return "ENERGY";
