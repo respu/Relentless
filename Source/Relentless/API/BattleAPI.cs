@@ -117,6 +117,11 @@ namespace Relentless.API
             client.Send(battleRedirect);
         }
 
+        public static void RemoveBattle(string name)
+        {
+            Variables.battleMap.Remove(name);
+        }
+
         public static void ResourcesUpdate(Client client, Battle battle)
         {
             NewEffects newEffects = new NewEffects();

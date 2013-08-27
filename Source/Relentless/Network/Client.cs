@@ -37,7 +37,24 @@ namespace Relentless.Network
             {
                 if (clientType == "Battle")
                 {
-                    BattleAPI.Message(BattleAPI.GetBattle(account.username), "Scrolls", account.username + " has disconnected!");
+                    Battle battle = BattleAPI.GetBattle(account.username);
+
+                    if (battle.phase == "End")
+                    {
+                        BattleAPI.RemoveBattle(account.username);
+                    }
+                    else
+                    {
+                        if (!PlayerAPI.IsOnline(battle.opponent))
+                        {
+                            BattleAPI.RemoveBattle(battle.opponent);
+                            BattleAPI.RemoveBattle(account.username);
+                        }
+                        else
+                        {
+                            BattleAPI.Message(battle, "Scrolls", account.username + " has disconnected!");
+                        }
+                    }
                 }
                 if (clientType == "Lobby")
                 {
