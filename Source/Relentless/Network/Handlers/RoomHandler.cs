@@ -66,6 +66,11 @@ namespace Relentless.Network
 
             foreach (string roomName in roomEnterMulti.roomNames)
             {
+                if (!RoomAPI.Exists(roomName))
+                {
+                    RoomAPI.Add(roomName);
+                }
+
                 RoomAPI.JoinRoom(client, roomName);
             }
         }
