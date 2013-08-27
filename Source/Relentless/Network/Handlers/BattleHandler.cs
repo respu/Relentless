@@ -189,6 +189,7 @@ namespace Relentless.Network
                         {
                             Creature creature = new Creature()
                             {
+                                kind      = cardType.kind,
                                 defaultHp = cardType.hp,
                                 defaultAp = cardType.ap,
                                 defaultAc = cardType.ac,
@@ -285,20 +286,19 @@ namespace Relentless.Network
                         }
 
                         cardInfo.data.selectableTiles.tileSets.Add(tileSets);
-
-                        if (cardType.targetArea == String.Empty)
-                        {
-                            cardType.targetArea = "TILE";
-                        }
-                        else
-                        {
-                            cardInfo.data.targetArea = cardType.targetArea;
-                        }
                     }
                     else
                     {
-                        cardInfo.data.selectableTiles.tileSets.Add(RuleHandler.HandleCardSelect(cardType));
+                        cardInfo.data.selectableTiles.tileSets.Add(RuleHandler.HandleCardSelect(battle, cardType));
+                    }
+
+                    if (cardType.targetArea == String.Empty)
+                    {
                         cardType.targetArea = "TILE";
+                    }
+                    else
+                    {
+                        cardInfo.data.targetArea = cardType.targetArea;
                     }
                 }
                 else

@@ -4,6 +4,7 @@ namespace Relentless.Global
 {
     public class Creature
     {
+        public string kind;
         public int currentHp;
         public int currentAp;
         public int currentAc;
