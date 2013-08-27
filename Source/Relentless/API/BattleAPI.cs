@@ -15,6 +15,33 @@ namespace Relentless.API
 
     public class BattleAPI
     {
+        public static void DecreaseResource(Battle battle, string resource, int amount)
+        {
+            switch (resource.ToLower())
+            {
+                case "decay":
+                    {
+                        battle.resources[(int)resourceType.decay, 0] -= amount;
+                        break;
+                    }
+                case "energy":
+                    {
+                        battle.resources[(int)resourceType.energy, 0] -= amount;
+                        break;
+                    }
+                case "growth":
+                    {
+                        battle.resources[(int)resourceType.growth, 0] -= amount;
+                        break;
+                    }
+                case "order":
+                    {
+                        battle.resources[(int)resourceType.order, 0] -= amount;
+                        break;
+                    }
+            }
+        }
+
         public static bool EnoughResources(Battle battle, CardType cardType)
         {
             if (cardType.costDecay != 0)
@@ -64,35 +91,35 @@ namespace Relentless.API
             return Variables.sessionMap[battle.opponent];
         }
 
-        public static void IncreaseResource(Client client, Battle battle, string resource, int amount)
+        public static void IncreaseResource(Battle battle, string resource, int amount)
         {
             switch (resource.ToLower())
             {
                 case "decay":
                     {
-                        battle.resources[(int)resourceType.decay, 0]++;
-                        battle.resources[(int)resourceType.decay, 1]++;
+                        battle.resources[(int)resourceType.decay, 0] += amount;
+                        battle.resources[(int)resourceType.decay, 1] += amount;
 
                         break;
                     }
                 case "energy":
                     {
-                        battle.resources[(int)resourceType.energy, 0]++;
-                        battle.resources[(int)resourceType.energy, 1]++;
+                        battle.resources[(int)resourceType.energy, 0] += amount;
+                        battle.resources[(int)resourceType.energy, 1] += amount;
 
                         break;
                     }
                 case "growth":
                     {
-                        battle.resources[(int)resourceType.growth, 0]++;
-                        battle.resources[(int)resourceType.growth, 1]++;
+                        battle.resources[(int)resourceType.growth, 0] += amount;
+                        battle.resources[(int)resourceType.growth, 1] += amount;
 
                         break;
                     }
                 case "order":
                     {
-                        battle.resources[(int)resourceType.order, 0]++;
-                        battle.resources[(int)resourceType.order, 1]++;
+                        battle.resources[(int)resourceType.order, 0] += amount;
+                        battle.resources[(int)resourceType.order, 1] += amount;
 
                         break;
                     }
@@ -120,6 +147,14 @@ namespace Relentless.API
         public static void RemoveBattle(string name)
         {
             Variables.battleMap.Remove(name);
+        }
+
+        public static void ResetResources(Battle battle)
+        {
+            battle.resources[(int)resourceType.decay, 0]  = battle.resources[(int)resourceType.decay, 1];
+            battle.resources[(int)resourceType.energy, 0] = battle.resources[(int)resourceType.energy, 1];
+            battle.resources[(int)resourceType.growth, 0] = battle.resources[(int)resourceType.growth, 1];
+            battle.resources[(int)resourceType.order, 0]  = battle.resources[(int)resourceType.order, 1];
         }
 
         public static void ResourcesUpdate(Client client, Battle battle)

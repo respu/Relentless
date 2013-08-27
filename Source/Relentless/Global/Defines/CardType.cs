@@ -28,6 +28,28 @@
         public string soundProjectile;
         public int available;
 
+        public int GetResourceCost()
+        {
+            if (costDecay != 0)
+            {
+                return costDecay;
+            }
+            if (costEnergy != 0)
+            {
+                return costEnergy;
+            }
+            if (costGrowth != 0)
+            {
+                return costGrowth;
+            }
+            if (costOrder != 0)
+            {
+                return costOrder;
+            }
+
+            return 0;
+        }
+
         public string GetResourceType()
         {
             if (costDecay != 0)

@@ -7,6 +7,13 @@ namespace Relentless.Handlers
 {
     public class RuleHandler
     {
+        public static void HandleCreatureStructureSummon(ref Creature creature, Battle battle, int posX, int posY)
+        {
+            foreach (string ability in creature.ruleList)
+            {
+            }
+        }
+
         public static List<CardInfo.Data.SelectableTiles.TileSet> HandleCardSelect(CardType cardType)
         {
             List<CardInfo.Data.SelectableTiles.TileSet> tileSets = new List<CardInfo.Data.SelectableTiles.TileSet>();

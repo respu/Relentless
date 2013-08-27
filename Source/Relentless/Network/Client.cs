@@ -158,6 +158,7 @@ namespace Relentless.Network
                         if (packetMap.ContainsKey("GameInfo"))      { BattleHandler.GameInfo     (this); }
                         if (packetMap.ContainsKey("LeaveGame"))     { BattleHandler.LeaveGame    (this); }
                         if (packetMap.ContainsKey("Ping"))          { MiscHandler.Ping           (this); }
+                        if (packetMap.ContainsKey("PlayCard"))      { BattleHandler.PlayCard     (this, packetMap["PlayCard"]); }
                         if (packetMap.ContainsKey("PlayCardInfo"))  { BattleHandler.PlayCardInfo (this, packetMap["PlayCardInfo"]); }
                         if (packetMap.ContainsKey("SacrificeCard")) { BattleHandler.SacrificeCard(this, packetMap["SacrificeCard"]); }
                         if (packetMap.ContainsKey("Surrender"))     { BattleHandler.Surrender    (this); }

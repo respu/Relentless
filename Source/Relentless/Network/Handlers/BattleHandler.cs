@@ -72,6 +72,7 @@ namespace Relentless.Network
                         }
 
                         BattleAPI.UpdateHand(client, battle);
+                        BattleAPI.ResetResources(battle);
                         BattleAPI.ResourcesUpdate(client, battle);
                         //BattleAPI.CreatureTick(client, battle);
 
@@ -144,6 +145,103 @@ namespace Relentless.Network
         public static void LeaveGame(Client client)
         {
             //Variables.battleMap.Remove(client.account.username);
+        }
+
+        public static void PlayCard(Client client, string jsonPacketData)
+        {
+            client.packetMap.Remove("PlayCard");
+
+            PlayCard playCard = JsonConvert.DeserializeObject<PlayCard>(jsonPacketData);
+
+            Battle battle = BattleAPI.GetBattle(client.account.username);
+
+            if (battle.handMap.ContainsKey(playCard.card))
+            {
+                NewEffects newEffects = new NewEffects();
+
+                foreach (string positionData in playCard.data.positions)
+                {
+                    Card card         = CardAPI.GetCard(client, playCard.card);
+                    CardType cardType = CardAPI.GetCardType(card.typeId);
+
+                    if (BattleAPI.EnoughResources(battle, cardType))
+                    {
+                        BattleAPI.DecreaseResource(battle, cardType.GetResourceType(), cardType.GetResourceCost());
+
+                        string[] positionDataArray = positionData.Split(',');
+
+                        NewEffects.Effect.Target target = new NewEffects.Effect.Target();
+                        target.color    = battle.color;
+                        target.position = positionDataArray[1] + "," + positionDataArray[2];
+
+                        NewEffects.Effect cardPlayedEffect  = new NewEffects.Effect();
+                        NewEffects.Effect summonUnitEffect  = new NewEffects.Effect();
+                        NewEffects.Effect statsUpdateEffect = new NewEffects.Effect();
+
+                        cardPlayedEffect.CardPlayed       = new NewEffects.Effect.CardPlayedEffect();
+                        cardPlayedEffect.CardPlayed.card  = card;
+                        cardPlayedEffect.CardPlayed.color = battle.color;
+                        cardPlayedEffect.CardPlayed.tile1 = target;
+
+                        newEffects.effects.Add(cardPlayedEffect);
+
+                        if (cardType.kind == "CREATURE" || cardType.kind == "STRUCTURE")
+                        {
+                            Creature creature = new Creature()
+                            {
+                                defaultHp = cardType.hp,
+                                defaultAp = cardType.ap,
+                                defaultAc = cardType.ac,
+                                currentHp = cardType.hp,
+                                currentAp = cardType.ap,
+                                currentAc = cardType.ac
+                            };
+
+                            foreach (string rule in cardType.rulesList.Split('|'))
+                            {
+                                creature.ruleList.Add(rule);
+                            }
+
+                            summonUnitEffect.SummonUnit        = new NewEffects.Effect.SummonUnitEffect();
+                            summonUnitEffect.SummonUnit.card   = card;
+                            summonUnitEffect.SummonUnit.target = target;
+
+                            newEffects.effects.Add(summonUnitEffect);
+
+                            statsUpdateEffect.StatsUpdate        = new NewEffects.Effect.StatsUpdateEffect();
+                            statsUpdateEffect.StatsUpdate.target = target;
+                            statsUpdateEffect.StatsUpdate.hp     = creature.defaultHp;
+                            statsUpdateEffect.StatsUpdate.ap     = creature.defaultAp;
+                            statsUpdateEffect.StatsUpdate.ac     = creature.defaultAc;
+
+                            newEffects.effects.Add(statsUpdateEffect);
+
+                            RuleHandler.HandleCreatureStructureSummon(ref creature, battle, Convert.ToInt16(positionDataArray[2]), Convert.ToInt16(positionDataArray[1]));
+                            battle.board[Convert.ToInt16(positionDataArray[2]), Convert.ToInt16(positionDataArray[1])] = creature;
+                        }
+                        if (cardType.kind == "ENCHANTMENT" || cardType.kind == "SPELL")
+                        {
+                            //RuleHandler.HandleEnchantmentSpellPlay(battle);
+                        }
+
+                        battle.handMap.Remove(playCard.card);
+
+                        BattleAPI.ResourcesUpdate(client, battle);
+                        BattleAPI.UpdateHand(client, battle);
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} tried to play card {1} but they don't have enough resources!", client.account.username, card.id);
+                    }
+                }
+
+                client.Send(newEffects);
+                BattleAPI.GetOpponentClient(battle).Send(newEffects);
+            }
+            else
+            {
+                Console.WriteLine("{0} tried to play card {1} which they don't have in hand!", client.account.username, playCard.card);
+            }
         }
 
         public static void PlayCardInfo(Client client, string jsonPacketData)
@@ -241,7 +339,7 @@ namespace Relentless.Network
                 }
                 else
                 {
-                    BattleAPI.IncreaseResource(client, battle, sacrificeCard.resource, 1);
+                    BattleAPI.IncreaseResource(battle, sacrificeCard.resource, 1);
                 }
 
                 BattleAPI.ResourcesUpdate(client, battle);

@@ -285,12 +285,22 @@ namespace Relentless.Network
 
         public class Effect
         {
+            public CardPlayedEffect CardPlayed;
             public CardSacrificedEffect CardSacrificed;
             public EndGameEffect EndGame;
             public HandUpdateEffect HandUpdate;
             public ResourcesUpdateEffect ResourcesUpdate;
+            public StatsUpdateEffect StatsUpdate;
+            public SummonUnitEffect SummonUnit;
             public SurrenderEffectEffect SurrenderEffect;
             public TurnBeginEffect TurnBegin;
+
+            public class CardPlayedEffect
+            {
+                public string color;
+                public Card card;
+                public Target tile1;
+            }
 
             public class CardSacrificedEffect
             {
@@ -356,9 +366,29 @@ namespace Relentless.Network
                 }
             }
 
+            public class StatsUpdateEffect
+            {
+                public Target target;
+                public int hp;
+                public int ap;
+                public int ac;
+            }
+
+            public class SummonUnitEffect
+            {
+                public Target target;
+                public Card card;
+            }
+
             public class SurrenderEffectEffect
             {
                 public string color;
+            }
+
+            public class Target
+            {
+                public string color;
+                public string position;
             }
 
             public class TurnBeginEffect
@@ -385,6 +415,18 @@ namespace Relentless.Network
         public int totalSoldCards;
         public int nrOfProfiles;
         public List<string> topRanked = new List<string>();
+    }
+
+    public class PlayCard
+    {
+        public string msg = "PlayCard";
+        public int card;
+        public Data data = new Data();
+
+        public class Data
+        {
+            public List<string> positions = new List<string>();
+        }
     }
 
     public class PlayCardInfo
