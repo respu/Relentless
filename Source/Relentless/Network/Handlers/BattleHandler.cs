@@ -198,7 +198,7 @@ namespace Relentless.Network
                                 currentAc = cardType.ac
                             };
 
-                            foreach (string rule in cardType.rulesList.Split('|'))
+                            foreach (string rule in cardType.rulesList)
                             {
                                 creature.ruleList.Add(rule);
                             }

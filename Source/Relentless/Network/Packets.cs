@@ -85,6 +85,63 @@ namespace Relentless.Network
         }
     }
 
+    public class CardTypes
+    {
+        public string msg = "CardTypes";
+        public List<CardType> cardTypes = new List<CardType>();
+
+        public class CardType
+        {
+            public int id;
+            public string kind;
+            public string name;
+            public string description;
+            public string flavor;
+            public string subTypesStr;
+            public int rarity;
+            public int hp;
+            public int ap;
+            public int ac;
+            public int costDecay;
+            public int costOrder;
+            public int costGrowth;
+            public int costEnergy;
+            public List<string> rulesList;
+            public int cardImage;
+            public int animationPreviewImage;
+            public string animationPreviewInfo;
+            public int animationBundle;
+            public List<Ability> abilities;
+            public string targetArea;
+            public List<PassiveRule> passiveRules;
+            public bool available;
+            public string sound;
+            public string soundProjectile;
+
+            public class Ability
+            {
+                public string id;
+                public string name;
+                public string description;
+                public Cost cost = new Cost();
+
+                public class Cost
+                {
+                    public int DECAY;
+                    public int ORDER;
+                    public int ENERGY;
+                    public int GROWTH;
+                }
+            }
+
+            public class PassiveRule
+            {
+                public string displayName;
+                public string description;
+            }
+        }
+    }
+
     public class DeckCards
     {
         public string msg = "DeckCards";

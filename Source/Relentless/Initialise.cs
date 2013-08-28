@@ -40,7 +40,6 @@ namespace Relentless
                 cardType.name                  = cardTypeResult.Read<string>(i, "name");
                 cardType.description           = cardTypeResult.Read<string>(i, "description");
                 cardType.flavor                = cardTypeResult.Read<string>(i, "flavor");
-                cardType.subTypesStr           = cardTypeResult.Read<string>(i, "subTypesStr");
                 cardType.rarity                = cardTypeResult.Read<int>   (i, "rarity");
                 cardType.hp                    = cardTypeResult.Read<int>   (i, "hp");
                 cardType.ap                    = cardTypeResult.Read<int>   (i, "ap");
@@ -49,17 +48,57 @@ namespace Relentless
                 cardType.costOrder             = cardTypeResult.Read<int>   (i, "costOrder");
                 cardType.costGrowth            = cardTypeResult.Read<int>   (i, "costGrowth");
                 cardType.costEnergy            = cardTypeResult.Read<int>   (i, "costEnergy");
-                cardType.rulesList             = cardTypeResult.Read<string>(i, "rulesList");
                 cardType.cardImage             = cardTypeResult.Read<int>   (i, "cardImage");
                 cardType.animationPreviewImage = cardTypeResult.Read<int>   (i, "animationPreviewImage");
                 cardType.animationPreviewInfo  = cardTypeResult.Read<string>(i, "animationPreviewInfo");
                 cardType.animationBundle       = cardTypeResult.Read<int>   (i, "animationBundle");
-                cardType.abilities             = cardTypeResult.Read<string>(i, "abilities");
                 cardType.targetArea            = cardTypeResult.Read<string>(i, "targetArea");
-                cardType.passiveRules          = cardTypeResult.Read<string>(i, "passiveRules");
                 cardType.sound                 = cardTypeResult.Read<string>(i, "sound");
                 cardType.soundProjectile       = cardTypeResult.Read<string>(i, "soundProjectile");
                 cardType.available             = cardTypeResult.Read<int>   (i, "available");
+
+                foreach (string subType in cardTypeResult.Read<string>(i, "subTypesStr").Split(','))
+                {
+                    cardType.subTypes.Add(subType);
+                }
+
+                string[] ruleListArray = cardTypeResult.Read<string>(i, "rulesList").Split('|');
+
+                if (ruleListArray.Length != 1)
+                {
+                    for (int ii = 1; ii < ruleListArray.Length; ii++)
+                    {
+                        cardType.rulesList.Add(ruleListArray[ii]);
+                    }
+                }
+
+                string[] abilityArray = cardTypeResult.Read<string>(i, "abilities").Split('|');
+
+                if (abilityArray.Length != 1)
+                {
+                    for (int ii = 0; ii < Convert.ToInt16(abilityArray[0]); ii++)
+                    {
+                        Ability ability = new Ability();
+                        ability.name        = abilityArray[(ii * 7) + 2];
+                        ability.description = abilityArray[(ii * 7) + 3];
+                        ability.costDecay   = Convert.ToInt16(abilityArray[(ii * 7) + 4]);
+                        ability.costEnergy  = Convert.ToInt16(abilityArray[(ii * 7) + 5]);
+                        ability.costGrowth  = Convert.ToInt16(abilityArray[(ii * 7) + 6]);
+                        ability.costOrder   = Convert.ToInt16(abilityArray[(ii * 7) + 7]);
+
+                        cardType.abilities.Add(abilityArray[(ii * 7) + 1], ability);
+                    }
+                }
+
+                string[] passiveRuleArray = cardTypeResult.Read<string>(i, "passiveRules").Split('|');
+
+                if (passiveRuleArray.Length != 1)
+                {
+                    for (int ii = 0; ii < Convert.ToInt16(passiveRuleArray[0]); ii++)
+                    {
+                        cardType.passiveRules.Add(passiveRuleArray[(ii * 2) + 1], passiveRuleArray[(ii * 2) + 2]);
+                    }
+                }
 
                 Variables.cardTypeMap.Add(cardType.id, cardType);
 

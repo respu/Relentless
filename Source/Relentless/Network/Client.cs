@@ -27,8 +27,7 @@ namespace Relentless.Network
             dataBuffer = new byte[16384];
 
             settings = new JsonSerializerSettings();
-            settings.NullValueHandling    = NullValueHandling.Ignore;
-            settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+            settings.NullValueHandling = NullValueHandling.Ignore;
         }
 
         public void Disconnect()
@@ -265,20 +264,6 @@ namespace Relentless.Network
             {
                 Disconnect();
 
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        //TEMP
-        public void Send(string jsonToSend)
-        {
-            try
-            {
-                byte[] buffer = Encoding.ASCII.GetBytes(jsonToSend);
-                clientSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
-            }
-            catch (Exception ex)
-            {
                 Console.WriteLine(ex.Message);
             }
         }

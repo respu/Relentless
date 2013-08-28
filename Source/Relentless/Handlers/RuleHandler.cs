@@ -21,7 +21,7 @@ namespace Relentless.Handlers
 
             Battle opponentBattle = BattleAPI.GetOpponentBattle(battle);
 
-            foreach (string ability in cardType.rulesList.Split('|'))
+            foreach (string ability in cardType.rulesList)
             {
                 switch (ability)
                 {

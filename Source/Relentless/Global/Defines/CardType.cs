@@ -1,4 +1,6 @@
-﻿namespace Relentless.Global
+﻿using System.Collections.Generic;
+
+namespace Relentless.Global
 {
     public class CardType
     {
@@ -7,7 +9,7 @@
         public string name;
         public string description;
         public string flavor;
-        public string subTypesStr;
+        public List<string> subTypes;
         public int rarity;
         public int hp;
         public int ap;
@@ -16,17 +18,25 @@
         public int costOrder;
         public int costGrowth;
         public int costEnergy;
-        public string rulesList;
+        public List<string> rulesList;
         public int cardImage;
         public int animationPreviewImage;
         public string animationPreviewInfo;
         public int animationBundle;
-        public string abilities;
+        public Dictionary<string, Ability> abilities;
         public string targetArea;
-        public string passiveRules;
+        public Dictionary<string, string> passiveRules;
         public string sound;
         public string soundProjectile;
         public int available;
+
+        public CardType()
+        {
+            abilities    = new Dictionary<string, Ability>();
+            passiveRules = new Dictionary<string, string>();
+            rulesList    = new List<string>();
+            subTypes     = new List<string>();
+        }
 
         public int GetResourceCost()
         {
