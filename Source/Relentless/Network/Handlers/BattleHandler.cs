@@ -74,15 +74,14 @@ namespace Relentless.Network
                         BattleAPI.UpdateHand(client, battle);
                         BattleAPI.ResetResources(battle);
                         BattleAPI.ResourcesUpdate(client, battle);
-                        //BattleAPI.CreatureTick(client, battle);
+                        BattleAPI.CreatureTick(client, battle);
 
                         battle.phase = "Main";
                         break;
                     }
                 case "Main":
                     {
-                        //BattleAPI.CreatureAttack(client, battle);
-
+                        BattleAPI.CreatureAttack(client, battle);
                         BattleAPI.TurnBegin(client, battle);
 
                         break;
@@ -190,6 +189,8 @@ namespace Relentless.Network
                             Creature creature = new Creature()
                             {
                                 kind      = cardType.kind,
+                                posX      = Convert.ToInt16(positionDataArray[2]),
+                                posY      = Convert.ToInt16(positionDataArray[1]),
                                 defaultHp = cardType.hp,
                                 defaultAp = cardType.ap,
                                 defaultAc = cardType.ac,
@@ -197,6 +198,20 @@ namespace Relentless.Network
                                 currentAp = cardType.ap,
                                 currentAc = cardType.ac
                             };
+
+                            if (cardType.ac == -1)
+                            {
+                                creature.canTick = false;
+                            }
+                            else
+                            {
+                                creature.canTick = true;
+                            }
+
+                            foreach (string subType in cardType.subTypes)
+                            {
+                                creature.subTypes.Add(subType);
+                            }
 
                             foreach (string rule in cardType.rulesList)
                             {
@@ -217,7 +232,7 @@ namespace Relentless.Network
 
                             newEffects.effects.Add(statsUpdateEffect);
 
-                            RuleHandler.HandleCreatureStructureSummon(ref creature, battle, Convert.ToInt16(positionDataArray[2]), Convert.ToInt16(positionDataArray[1]));
+                            RuleHandler.HandleCreatureStructureSummon(ref creature, battle);
                             battle.board[Convert.ToInt16(positionDataArray[2]), Convert.ToInt16(positionDataArray[1])] = creature;
                         }
                         if (cardType.kind == "ENCHANTMENT" || cardType.kind == "SPELL")

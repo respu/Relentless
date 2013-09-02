@@ -1,5 +1,6 @@
 ﻿using Relentless.Configuration;
 using Relentless.Global;
+using Relentless.Handlers;
 using Relentless.Network;
 using System.Collections.Generic;
 
@@ -15,6 +16,79 @@ namespace Relentless.API
 
     public class BattleAPI
     {
+        public static void CreatureAttack(Client client, Battle battle)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                for (int ii = 0; ii < 3; ii++)
+                {
+                    Creature creature = battle.board[ii, i];
+
+                    if (creature != null)
+                    {
+                        if (creature.canTick && creature.currentAc == 0)
+                        {
+                            RuleHandler.HandleCreatureStructureAttack(client, ref creature, battle);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static int CreatureOnRow(Battle opponentBattle, Creature creature)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (opponentBattle.board[i, creature.posY] != null)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public static void CreatureTick(Client client, Battle battle)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                for (int ii = 0; ii < 3; ii++)
+                {
+                    Creature creature = battle.board[ii, i];
+
+                    if (creature != null)
+                    {
+                        if (creature.canTick)
+                        {
+                            creature.currentAc--;
+                            CreatureUpdate(client, battle, creature);
+                        }
+                    }
+                }
+            } 
+        }
+
+        public static void CreatureUpdate(Client client, Battle battle, Creature creature)
+        {
+            NewEffects newEffects               = new NewEffects();
+            NewEffects.Effect statsUpdateEffect = new NewEffects.Effect();
+
+            NewEffects.Effect.Target target = new NewEffects.Effect.Target();
+            target.color    = battle.color;
+            target.position = creature.posY + "," + creature.posX;
+
+            statsUpdateEffect.StatsUpdate        = new NewEffects.Effect.StatsUpdateEffect();
+            statsUpdateEffect.StatsUpdate.target = target;
+            statsUpdateEffect.StatsUpdate.hp     = creature.currentHp;
+            statsUpdateEffect.StatsUpdate.ac     = creature.currentAc;
+            statsUpdateEffect.StatsUpdate.ap     = creature.currentAp;
+
+            newEffects.effects.Add(statsUpdateEffect);
+
+            client.Send(newEffects);
+            GetOpponentClient(battle).Send(newEffects);
+        }
+
         public static void DecreaseResource(Battle battle, string resource, int amount)
         {
             switch (resource.ToLower())

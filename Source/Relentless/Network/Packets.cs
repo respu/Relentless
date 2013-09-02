@@ -344,13 +344,20 @@ namespace Relentless.Network
         {
             public CardPlayedEffect CardPlayed;
             public CardSacrificedEffect CardSacrificed;
+            public DamageIdolEffect DamageIdol;
+            public DamageUnitEffect DamageUnit;
             public EndGameEffect EndGame;
             public HandUpdateEffect HandUpdate;
+            public IdolUpdateEffect IdolUpdate;
+            public RemoveUnitEffect RemoveUnit;
             public ResourcesUpdateEffect ResourcesUpdate;
             public StatsUpdateEffect StatsUpdate;
             public SummonUnitEffect SummonUnit;
             public SurrenderEffectEffect SurrenderEffect;
             public TurnBeginEffect TurnBegin;
+            public UnitAttackDoneEffect UnitAttackDone;
+            public UnitAttackIdolEffect UnitAttackIdol;
+            public UnitAttackTileEffect UnitAttackTile;
 
             public class CardPlayedEffect
             {
@@ -363,6 +370,23 @@ namespace Relentless.Network
             {
                 public string color;
                 public string resource;
+            }
+
+            public class DamageIdolEffect
+            {
+                public Idol idol;
+                public int amount;
+                public bool kill;
+            }
+
+            public class DamageUnitEffect
+            {
+                public Target targetTile;
+                public int amount;
+                public int hp;
+                public bool kill;
+                public string attackType;
+                public string damageType;
             }
 
             public class EndGameEffect
@@ -400,6 +424,24 @@ namespace Relentless.Network
             {
                 public string profileId;
                 public List<Card> cards = new List<Card>();
+            }
+
+            public class Idol
+            {
+                public string color;
+                public int position;
+                public int hp;
+            }
+
+            public class IdolUpdateEffect
+            {
+                public Idol idol;
+            }
+
+            public class RemoveUnitEffect
+            {
+                public Target tile;
+                public string removalType;
             }
 
             public class ResourcesUpdateEffect
@@ -452,6 +494,23 @@ namespace Relentless.Network
             {
                 public string color;
                 public int turn;
+            }
+
+            public class UnitAttackDoneEffect
+            {
+                public Target source;
+            }
+
+            public class UnitAttackIdolEffect
+            {
+                public Target attacker;
+                public int idol;
+            }
+
+            public class UnitAttackTileEffect
+            {
+                public Target source;
+                public Target target;
             }
         }
     }
