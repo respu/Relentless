@@ -368,6 +368,8 @@ namespace Relentless.Network
                 cardSacrificedEffect.CardSacrificed.color    = battle.color;
                 cardSacrificedEffect.CardSacrificed.resource = sacrificeCard.resource.ToUpper();
 
+                newEffects.effects.Add(cardSacrificedEffect);
+
                 BattleAPI.GetOpponentClient(battle).Send(newEffects);
             }
             else
