@@ -224,16 +224,17 @@ namespace Relentless.Network
 
                             newEffects.effects.Add(summonUnitEffect);
 
+                            RuleHandler.HandleCreatureStructureSummon(ref creature, battle);
+
                             statsUpdateEffect.StatsUpdate        = new NewEffects.Effect.StatsUpdateEffect();
                             statsUpdateEffect.StatsUpdate.target = target;
-                            statsUpdateEffect.StatsUpdate.hp     = creature.defaultHp;
-                            statsUpdateEffect.StatsUpdate.ap     = creature.defaultAp;
-                            statsUpdateEffect.StatsUpdate.ac     = creature.defaultAc;
+                            statsUpdateEffect.StatsUpdate.hp     = creature.currentHp;
+                            statsUpdateEffect.StatsUpdate.ap     = creature.currentAp;
+                            statsUpdateEffect.StatsUpdate.ac     = creature.currentAc;
 
                             newEffects.effects.Add(statsUpdateEffect);
 
-                            RuleHandler.HandleCreatureStructureSummon(ref creature, battle);
-                            battle.board[Convert.ToInt16(positionDataArray[2]), Convert.ToInt16(positionDataArray[1])] = creature;
+                            battle.board[creature.posX, creature.posY] = creature;
                         }
                         if (cardType.kind == "ENCHANTMENT" || cardType.kind == "SPELL")
                         {

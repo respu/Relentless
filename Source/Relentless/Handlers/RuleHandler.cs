@@ -170,6 +170,14 @@ namespace Relentless.Handlers
         {
             foreach (string ability in creature.ruleList)
             {
+                switch (ability)
+                {
+                    case "Haste":
+                        {
+                            creature.currentAc = 0;
+                            break;
+                        }
+                }
             }
         }
 
