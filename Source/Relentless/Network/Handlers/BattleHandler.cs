@@ -224,7 +224,7 @@ namespace Relentless.Network
 
                             newEffects.effects.Add(summonUnitEffect);
 
-                            RuleHandler.HandleCreatureStructureSummon(ref creature, battle);
+                            RuleHandler.HandleCreatureStructureSummon(client, ref creature, battle);
 
                             statsUpdateEffect.StatsUpdate        = new NewEffects.Effect.StatsUpdateEffect();
                             statsUpdateEffect.StatsUpdate.target = target;

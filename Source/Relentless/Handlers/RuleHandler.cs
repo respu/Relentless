@@ -166,15 +166,121 @@ namespace Relentless.Handlers
             }
         }
 
-        public static void HandleCreatureStructureSummon(ref Creature creature, Battle battle)
+        public static void HandleCreatureStructureSummon(Client client, ref Creature creature, Battle battle)
         {
             foreach (string ability in creature.ruleList)
             {
                 switch (ability)
                 {
+                    case "DrawScrollOnEnterBoard":
+                        {
+                            Card card = CardAPI.DrawCard(battle);
+                            battle.handMap.Add(card.id, card);
+
+                            break;
+                        }
+                    case "GravelockStrengthModifier":
+                        {
+                            foreach (Creature otherCreature in battle.board)
+                            {
+                                if (otherCreature != null)
+                                {
+                                    if (creature != otherCreature && otherCreature.subTypes.Contains("Gravelock"))
+                                    {
+                                        otherCreature.currentAp++;
+                                        otherCreature.currentHp++;
+
+                                        BattleAPI.CreatureUpdate(client, battle, otherCreature);
+                                    }
+                                }
+                            }
+
+                            break;
+                        }
+                    case "GreatWolfStrengthModifier":
+                        {
+                            foreach (Creature otherCreature in battle.board)
+                            {
+                                if (creature != otherCreature && otherCreature.subTypes.Contains("Wolf"))
+                                {
+                                    creature.currentAp++;
+                                }
+                            }
+
+                            break;
+                        }
                     case "Haste":
                         {
                             creature.currentAc = 0;
+                            break;
+                        }
+                    case "IncOutputEnergy":
+                        {
+                            BattleAPI.IncreaseResource(battle, "energy", 1);
+                            break;
+                        }
+                    case "IncOutputGrowth":
+                        {
+                            BattleAPI.IncreaseResource(battle, "growth", 1);
+                            break;
+                        }
+                    case "IncOutputOrder":
+                        {
+                            BattleAPI.IncreaseResource(battle, "order", 1);
+                            break;
+                        }
+                    case "NighthawkIncAp":
+                        {
+                            foreach (Creature otherCreature in battle.board)
+                            {
+                                if (creature != otherCreature && otherCreature.subTypes.Contains("Gravelock"))
+                                {
+                                    creature.currentAp++;
+                                }
+                            }
+
+                            break;
+                        }
+                    case "RatHealthModifier":
+                        {
+                            foreach (Creature otherCreature in battle.board)
+                            {
+                                if (otherCreature != null)
+                                {
+                                    if (creature != otherCreature && otherCreature.subTypes.Contains("Rat"))
+                                    {
+                                        otherCreature.currentHp++;
+                                        BattleAPI.CreatureUpdate(client, battle, otherCreature);
+                                    }
+                                }
+                            }
+
+                            break;
+                        }
+                    case "ShrineIncHp":
+                        {
+                            foreach (Creature otherCreature in battle.board)
+                            {
+                                if (otherCreature != null)
+                                {
+                                    otherCreature.currentHp += 1;
+                                    BattleAPI.CreatureUpdate(client, battle, otherCreature);
+                                }
+                            }
+
+                            break;
+                        }
+                    case "TotemPower":
+                        {
+                            foreach (Creature otherCreature in battle.board)
+                            {
+                                if (otherCreature != null)
+                                {
+                                    otherCreature.currentAp += 1;
+                                    BattleAPI.CreatureUpdate(client, battle, otherCreature);
+                                }
+                            }
+
                             break;
                         }
                 }
