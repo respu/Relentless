@@ -27,7 +27,8 @@ namespace Relentless.Network
             dataBuffer = new byte[16384];
 
             settings = new JsonSerializerSettings();
-            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.NullValueHandling    = NullValueHandling.Ignore;
+            settings.DefaultValueHandling = DefaultValueHandling.Ignore;
         }
 
         public void Disconnect()
