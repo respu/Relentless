@@ -19,10 +19,9 @@ namespace Relentless.Configuration
 
         public class Network
         {
+            public string serverHost;
             public int routePort;
-            public string lobbyHost;
             public int lobbyPort;
-            public string battleHost;
             public int battlePort;
         }
 

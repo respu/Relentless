@@ -12,10 +12,9 @@ namespace Relentless.Configuration
         public static string mysqlUsername;
         public static string mysqlPassword;
         public static string mysqlDatabase;
+        public static string serverHost;
         public static int    routePort;
-        public static string lobbyHost;
         public static int    lobbyPort;
-        public static string battleHost;
         public static int    battlePort;
         public static string serverName;
         public static int    serverMaxPlayers;
@@ -38,10 +37,9 @@ namespace Relentless.Configuration
                 mysqlUsername    = configuration.mysql.username;
                 mysqlPassword    = configuration.mysql.password;
                 mysqlDatabase    = configuration.mysql.database;
+                serverHost       = configuration.network.serverHost;
                 routePort        = configuration.network.routePort;
-                lobbyHost        = configuration.network.lobbyHost;
                 lobbyPort        = configuration.network.lobbyPort;
-                battleHost       = configuration.network.battleHost;
                 battlePort       = configuration.network.battlePort;
                 serverName       = configuration.server.general.name;
                 serverMaxPlayers = configuration.server.general.maxPlayers;

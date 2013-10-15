@@ -18,7 +18,7 @@ namespace Relentless.Network
             client.packetMap.Remove("LobbyLookup");
 
             LobbyLookup lobbyLookup = new LobbyLookup();
-            lobbyLookup.ip   = ConfigReader.lobbyHost;
+            lobbyLookup.ip   = ConfigReader.serverHost;
             lobbyLookup.port = ConfigReader.lobbyPort;
 
             client.Send(lobbyLookup);

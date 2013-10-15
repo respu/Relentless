@@ -105,7 +105,7 @@ namespace Relentless.Network
             gameInfo.roundTimerSeconds = 90;
             gameInfo.phase             = battle.phase;
             gameInfo.rewardForIdolKill = 10;
-            gameInfo.nodeId            = ConfigReader.lobbyHost;
+            gameInfo.nodeId            = ConfigReader.serverHost;
             gameInfo.port              = ConfigReader.lobbyPort;
 
             Account whiteAccount; Account blackAccount;

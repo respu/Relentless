@@ -212,7 +212,7 @@ namespace Relentless.API
         public static void Redirect(Client client)
         {
             BattleRedirect battleRedirect = new BattleRedirect();
-            battleRedirect.ip   = ConfigReader.battleHost;
+            battleRedirect.ip   = ConfigReader.serverHost;
             battleRedirect.port = ConfigReader.battlePort;
 
             client.Send(battleRedirect);
