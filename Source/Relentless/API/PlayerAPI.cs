@@ -65,5 +65,19 @@ namespace Relentless.API
             client.account.shards -= amount;
             DB.Database.Execute(client.connection, true, true, "UPDATE account_data SET shards = ? WHERE guid = ?", client.account.shards, client.account.id);
         }
+
+        public static User UserInfo(Client client)
+        {
+            User user = new User();
+            user.id               = client.account.id;
+            user.userUuid         = ""; //Note: Unsure what exactly the userUuid does or how it is generated
+            user.name             = client.account.username;
+            user.acceptChallenges = client.account.acceptChallenges;
+            user.acceptTrades     = client.account.acceptTrades;
+            user.adminRole        = client.account.adminRole;
+            user.userType         = "Beta";
+
+            return user;
+        }
     }
 }

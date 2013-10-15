@@ -26,17 +26,20 @@ namespace Relentless.Global
         public Dictionary<string, Deck> deckMap;
         public List<int> deckValidate;
         public Dictionary<string, string> challengeMap;
-        
+        public List<string> tradeRequestList;
+        public TradeStatus tradeStatus;
 
         public Account()
         {
-            authenticated = false;
-            avatar        = new Avatar();
-            cardMap       = new Dictionary<int, Card>();
-            chatroomList  = new List<string>();
-            deckMap       = new Dictionary<string, Deck>();
-            deckValidate  = new List<int>();
-            challengeMap  = new Dictionary<string, string>();
+            authenticated    = false;
+            avatar           = new Avatar();
+            cardMap          = new Dictionary<int, Card>();
+            chatroomList     = new List<string>();
+            deckMap          = new Dictionary<string, Deck>();
+            deckValidate     = new List<int>();
+            challengeMap     = new Dictionary<string, string>();
+            tradeRequestList = new List<string>();
+            tradeStatus      = new TradeStatus();
         }
     }
 }

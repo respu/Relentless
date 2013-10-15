@@ -71,7 +71,9 @@
     <Compile Include="Global\Defines\Creature.cs" />
     <Compile Include="Global\Defines\Deck.cs" />
     <Compile Include="Global\Defines\StoreItem.cs" />
+    <Compile Include="Global\Defines\TradeStatus.cs" />
     <Compile Include="Global\Defines\Trial.cs" />
+    <Compile Include="Global\Defines\User.cs" />
     <Compile Include="Global\Variables.cs" />
     <Compile Include="Handlers\AbilityHandler.cs" />
     <Compile Include="Handlers\BattleChatHandler.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Network\Handlers\RoomHandler.cs" />
     <Compile Include="Network\Handlers\SignInHandler.cs" />
     <Compile Include="Network\Handlers\StoreHandler.cs" />
+    <Compile Include="Network\Handlers\TradeHandler.cs" />
     <Compile Include="Network\Packets.cs" />
     <Compile Include="Network\Handlers\MiscHandler.cs" />
     <Compile Include="Network\Listener.cs" />

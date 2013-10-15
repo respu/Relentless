@@ -721,6 +721,78 @@ namespace Relentless.Network
         public string password;
     }
 
+    public class TradeAccept
+    {
+        public string msg = "TradeAccept";
+        public string inviter;
+    }
+
+    public class TradeAddCards
+    {
+        public string msg = "TradeAddCards";
+        public List<int> cardIds = new List<int>();
+    }
+
+    public class TradeDeckInvalidationWarning
+    {
+        public string msg = "TradeDeckInvalidationWarning";
+        public List<string> deckNames = new List<string>();
+    }
+
+    public class TradeDecline
+    {
+        public string msg = "TradeDecline";
+        public string inviter;
+    }
+
+    public class TradeInvite
+    {
+        public string msg = "TradeInvite";
+        public string profile;
+    }
+
+    public class TradeInviteForward
+    {
+        public string msg = "TradeInviteForward";
+        public User inviter = new User();
+    }
+
+    public class TradeRemoveCard
+    {
+        public string msg = "TradeRemoveCard";
+        public int cardId;
+    }
+
+    public class TradeResponse
+    {
+        public string msg = "TradeResponse";
+        public string status;
+        public User to = new User();
+        public User from = new User();
+    }
+
+    public class TradeSetGold
+    {
+        public string msg = "TradeSetGold";
+        public int gold;
+    }
+
+    public class TradeView
+    {
+        public string msg = "TradeView";
+        public bool modified;
+        public TradeInfo to = new TradeInfo();
+        public TradeInfo from = new TradeInfo();
+
+        public class TradeInfo
+        {
+            public User profile = new User();
+            public List<int> cardIds = new List<int>();
+            public int gold;
+            public bool accepted;
+        }
+    }
+
     public class Whisper
     {
         public string msg = "Whisper";

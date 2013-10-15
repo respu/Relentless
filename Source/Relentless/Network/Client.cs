@@ -58,6 +58,34 @@ namespace Relentless.Network
                 }
                 if (clientType == "Lobby")
                 {
+                    if (account.tradeStatus.trading)
+                    {
+                        Client opponentSession = PlayerAPI.GetSession(account.tradeStatus.partner, false);
+
+                        if (opponentSession != null)
+                        {
+                            opponentSession.account.tradeStatus.trading = false;
+
+                            TradeResponse tradeResponse = new TradeResponse();
+                            tradeResponse.status = "CANCEL_BARGAIN";
+
+                            if (account.tradeStatus.initiator)
+                            {
+                                tradeResponse.from = PlayerAPI.UserInfo(this);
+                                tradeResponse.to   = PlayerAPI.UserInfo(opponentSession);
+                            }
+                            else
+                            {
+                                tradeResponse.from = PlayerAPI.UserInfo(opponentSession);
+                                tradeResponse.to   = PlayerAPI.UserInfo(this);
+                            }
+
+                            opponentSession.Send(tradeResponse);
+
+                            RoomAPI.Message("trade-" + account.tradeStatus.tradeId, "Scrolls", "Trade ended (partner withdrew).");
+                        }
+                    }
+
                     foreach (string roomName in account.chatroomList)
                     {
                         RoomAPI.RemovePlayer(roomName, account.username);
@@ -141,6 +169,15 @@ namespace Relentless.Network
                         if (packetMap.ContainsKey("RoomsList"))                  { RoomHandler.RoomsList                 (this); }
                         if (packetMap.ContainsKey("SelectPreconstructed"))       { ProfileHandler.SelectPreconstructed   (this, packetMap["SelectPreconstructed"]); }
                         if (packetMap.ContainsKey("SellCards"))                  { StoreHandler.SellCards                (this, packetMap["SellCards"]); }
+                        if (packetMap.ContainsKey("TradeAccept"))                { TradeHandler.TradeAccept              (this, packetMap["TradeAccept"]); }
+                        if (packetMap.ContainsKey("TradeAcceptBargain"))         { TradeHandler.TradeAcceptBargain       (this); }
+                        if (packetMap.ContainsKey("TradeAddCards"))              { TradeHandler.TradeAddCards            (this, packetMap["TradeAddCards"]); }
+                        if (packetMap.ContainsKey("TradeCancel"))                { TradeHandler.TradeCancel              (this); }
+                        if (packetMap.ContainsKey("TradeDecline"))               { TradeHandler.TradeDecline             (this, packetMap["TradeDecline"]); }
+                        if (packetMap.ContainsKey("TradeInvite"))                { TradeHandler.TradeInvite              (this, packetMap["TradeInvite"]); }
+                        if (packetMap.ContainsKey("TradeRemoveCard"))            { TradeHandler.TradeRemoveCard          (this, packetMap["TradeRemoveCard"]); }
+                        if (packetMap.ContainsKey("TradeSetGold"))               { TradeHandler.TradeSetGold             (this, packetMap["TradeSetGold"]); }
+                        if (packetMap.ContainsKey("TradeUnacceptBargain"))       { TradeHandler.TradeUnacceptBargain     (this); }
                         if (packetMap.ContainsKey("Whisper"))                    { RoomHandler.Whisper                   (this, packetMap["Whisper"]); }
                     }
                 }
