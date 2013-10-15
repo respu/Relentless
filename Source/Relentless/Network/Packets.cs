@@ -55,7 +55,7 @@ namespace Relentless.Network
     public class BuyStoreItemResponse
     {
         public string msg = "BuyStoreItemResponse";
-        public List<Card> cards;
+        public List<Card> cards = new List<Card>();
     }
 
     public class CardInfo
