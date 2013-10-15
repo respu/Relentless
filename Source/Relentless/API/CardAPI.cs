@@ -9,6 +9,22 @@ namespace Relentless.API
 {
     public class CardAPI
     {
+        public static Card AddCard(Client client, CardType cardType)
+        {
+            DB.Database.Execute(client.connection, true, true, "INSERT INTO account_cards VALUES (0, ?, ?, 1, 0, 0);", client.account.id, cardType.id);
+
+            Card card = new Card();
+            card.id       = DB.Database.lastId;
+            card.typeId   = cardType.id;
+            card.tradable = true;
+            card.isToken  = false;
+            card.level    = 0;
+
+            client.account.cardMap.Add(card.id, card);
+
+            return card;
+        }
+
         public static Card DrawCard(Battle battle)
         {
             if (battle.deck.cards.Count == 0)
