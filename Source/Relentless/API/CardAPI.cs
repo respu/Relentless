@@ -69,6 +69,12 @@ namespace Relentless.API
             return null;
         }
 
+        public static void RemoveCard(Client client, int cardId)
+        {
+            client.account.cardMap.Remove(cardId);
+            DB.Database.Execute(client.connection, true, true, "DELETE FROM account_cards WHERE id = ?", cardId);
+        }
+
         public static void RemoveCardFromDecks(Client client, int cardId)
         {
             bool cardFound = false;
