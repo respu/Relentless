@@ -110,6 +110,9 @@ namespace Relentless.Network
                             {
                                 CardAPI.RemoveCardFromDecks(client, cardId);
                                 CardAPI.TransferCard(client, opponentSession, cardId);
+
+                                PlayerAPI.UpdateScrollTypeCount(client);
+                                PlayerAPI.UpdateScrollTypeCount(opponentSession);
                             }
                         }
                         if (opponentSession.account.tradeStatus.cardIds.Count > 0)
@@ -118,6 +121,9 @@ namespace Relentless.Network
                             {
                                 CardAPI.RemoveCardFromDecks(opponentSession, cardId);
                                 CardAPI.TransferCard(opponentSession, client, cardId);
+
+                                PlayerAPI.UpdateScrollTypeCount(client);
+                                PlayerAPI.UpdateScrollTypeCount(opponentSession);
                             }
                         }
 

@@ -1,6 +1,7 @@
 ﻿using Relentless.Database;
 using Relentless.Global;
 using Relentless.Network;
+using System.Collections.Generic;
 
 namespace Relentless.API
 {
@@ -64,6 +65,23 @@ namespace Relentless.API
         {
             client.account.shards -= amount;
             DB.Database.Execute(client.connection, true, true, "UPDATE account_data SET shards = ? WHERE guid = ?", client.account.shards, client.account.id);
+        }
+
+        public static void UpdateScrollTypeCount(Client client)
+        {
+            client.account.cardTypeCount.common   = 0;
+            client.account.cardTypeCount.uncommon = 0;
+            client.account.cardTypeCount.rare     = 0;
+
+            foreach (KeyValuePair<int, Card> card in client.account.cardMap)
+            {
+                switch (CardAPI.GetCardType(card.Value.typeId).rarity)
+                {
+                    case 0: { client.account.cardTypeCount.common++; break; }
+                    case 1: { client.account.cardTypeCount.uncommon++; break; }
+                    case 2: { client.account.cardTypeCount.rare++; break; }
+                }
+            }
         }
 
         public static User UserInfo(Client client)

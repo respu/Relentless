@@ -87,9 +87,9 @@ namespace Relentless.Network
                     profilePageInfoServer.gamesWon         = remoteSession.account.gamesWon;
                     profilePageInfoServer.gamesSurrendered = remoteSession.account.gamesSurrendered;
                     profilePageInfoServer.ranking          = 0;
-                    profilePageInfoServer.scrollsCommon    = 0;
-                    profilePageInfoServer.scrollsUncommon  = 0;
-                    profilePageInfoServer.scrollsRare      = 0;
+                    profilePageInfoServer.scrollsCommon    = remoteSession.account.cardTypeCount.common;
+                    profilePageInfoServer.scrollsUncommon  = remoteSession.account.cardTypeCount.uncommon;
+                    profilePageInfoServer.scrollsRare      = remoteSession.account.cardTypeCount.rare;
                     profilePageInfoServer.lastGamePlayed   = "Never";
                     profilePageInfoServer.avatar.profileId = remoteSession.account.id;
                     profilePageInfoServer.avatar.head      = remoteSession.account.avatar.head;
@@ -108,9 +108,9 @@ namespace Relentless.Network
                 profilePageInfoServer.gamesWon         = client.account.gamesWon;
                 profilePageInfoServer.gamesSurrendered = client.account.gamesSurrendered;
                 profilePageInfoServer.ranking          = 0;
-                profilePageInfoServer.scrollsCommon    = 0;
-                profilePageInfoServer.scrollsUncommon  = 0;
-                profilePageInfoServer.scrollsRare      = 0;
+                profilePageInfoServer.scrollsCommon    = client.account.cardTypeCount.common;
+                profilePageInfoServer.scrollsUncommon  = client.account.cardTypeCount.uncommon;
+                profilePageInfoServer.scrollsRare      = client.account.cardTypeCount.rare;
                 profilePageInfoServer.lastGamePlayed   = "Never";
                 profilePageInfoServer.avatar.profileId = client.account.id;
                 profilePageInfoServer.avatar.head      = client.account.avatar.head;

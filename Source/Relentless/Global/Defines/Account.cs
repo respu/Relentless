@@ -28,6 +28,7 @@ namespace Relentless.Global
         public Dictionary<string, string> challengeMap;
         public List<string> tradeRequestList;
         public TradeStatus tradeStatus;
+        public CardTypeCount cardTypeCount;
 
         public Account()
         {
@@ -40,6 +41,14 @@ namespace Relentless.Global
             challengeMap     = new Dictionary<string, string>();
             tradeRequestList = new List<string>();
             tradeStatus      = new TradeStatus();
+            cardTypeCount    = new CardTypeCount();
         }
+    }
+
+    public class CardTypeCount
+    {
+        public int common;
+        public int uncommon;
+        public int rare;
     }
 }

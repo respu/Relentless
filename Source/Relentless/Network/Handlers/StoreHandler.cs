@@ -64,6 +64,8 @@ namespace Relentless.Network
             {
                 StoreItemHandler.PurchaseItem(client, storeItem.itemType);
                 ProfileHandler.ProfileDataInfo(client);
+
+                PlayerAPI.UpdateScrollTypeCount(client);
             }
             else
             {
@@ -164,6 +166,7 @@ namespace Relentless.Network
                 DB.Database.Execute(client.connection, true, true, "UPDATE server_stats SET totalSoldCards = totalSoldCards + 1"); 
 
                 PlayerAPI.IncreaseGold(client, totalGold);
+                PlayerAPI.UpdateScrollTypeCount(client);
 
                 OkMessage okMessage = new OkMessage();
                 okMessage.op = "SellCards";

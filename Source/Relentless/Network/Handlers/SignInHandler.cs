@@ -216,6 +216,8 @@ namespace Relentless.Network
                         client.account.cardMap.Add(card.id, card);
                     }
 
+                    PlayerAPI.UpdateScrollTypeCount(client);
+
                     SQLResult deckResult = DB.Database.Select(client.connection, false, false, "SELECT * FROM account_decks WHERE guid = ?", client.account.id);
 
                     for (int i = 0; i < deckResult.Count; i++)
