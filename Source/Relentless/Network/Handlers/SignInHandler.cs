@@ -52,7 +52,6 @@ namespace Relentless.Network
             else
             {
                 BattleAPI.Message(battle, "Scrolls", client.account.username + " has reconnected!");
-
                 BattleHandler.GameInfo(client);
             }
         }
@@ -208,27 +207,11 @@ namespace Relentless.Network
                     for (int i = 0; i < cardResult.Count; i++)
                     {
                         Card card = new Card();
-                        card.id     = cardResult.Read<int>(i, "id");
-                        card.typeId = cardResult.Read<int>(i, "typeId");
-                        card.level  = cardResult.Read<int>(i, "level");
-
-                        if (cardResult.Read<int>(i, "tradable") == 1)
-                        {
-                            card.tradable = true;
-                        }
-                        else
-                        {
-                            card.tradable = false;
-                        }
-
-                        if (cardResult.Read<int>(i, "isToken") == 1)
-                        {
-                            card.isToken = true;
-                        }
-                        else
-                        {
-                            card.isToken = false;
-                        }
+                        card.id       = cardResult.Read<int>(i, "id");
+                        card.typeId   = cardResult.Read<int>(i, "typeId");
+                        card.level    = cardResult.Read<int>(i, "level");
+                        card.tradable = cardResult.Read<int>(i, "tradable") == 1;
+                        card.isToken  = cardResult.Read<int>(i, "isToken") == 1;
 
                         client.account.cardMap.Add(card.id, card);
                     }
@@ -241,6 +224,7 @@ namespace Relentless.Network
                         deck.name      = deckResult.Read<string>(i, "name");
                         deck.timestamp = deckResult.Read<long>  (i, "timestamp");
                         deck.metadata  = deckResult.Read<string>(i, "metadata");
+                        deck.valid     = deckResult.Read<int>   (i, "valid") == 1;
 
                         foreach (string resource in deckResult.Read<string>(i, "resources").Split('|'))
                         {
@@ -249,41 +233,12 @@ namespace Relentless.Network
 
                         foreach (string cardId in deckResult.Read<string>(i, "cards").Split('|'))
                         {
-                            SQLResult deckCardResult = DB.Database.Select(client.connection, false, false, "SELECT * FROM account_cards WHERE id = ?", cardId);
+                            int iCardId = Convert.ToInt16(cardId);
 
-                            Card card = new Card();
-                            card.id     = Convert.ToInt16(cardId);
-                            card.typeId = deckCardResult.Read<int>(0, "typeId");
-                            card.level  = deckCardResult.Read<int>(0, "level");
-
-                            if (deckCardResult.Read<int>(0, "tradable") == 1)
+                            if (CardAPI.Exists(client, iCardId))
                             {
-                                card.tradable = true;
+                                deck.cards.Add(CardAPI.GetCard(client, iCardId));
                             }
-                            else
-                            {
-                                card.tradable = false;
-                            }
-
-                            if (deckCardResult.Read<int>(0, "isToken") == 1)
-                            {
-                                card.isToken = true;
-                            }
-                            else
-                            {
-                                card.isToken = false;
-                            }
-
-                            deck.cards.Add(card);
-                        }
-
-                        if (deckResult.Read<int>(i, "valid") == 1)
-                        {
-                            deck.valid = true;
-                        }
-                        else
-                        {
-                            deck.valid = false;
                         }
 
                         client.account.deckMap.Add(deck.name, deck);
