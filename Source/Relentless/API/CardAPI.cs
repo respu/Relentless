@@ -26,23 +26,26 @@ namespace Relentless.API
             return card;
         }
 
-        public static Card DrawCard(Battle battle)
+        public static void DrawCard(Battle battle, int cardCount)
         {
-            if (battle.deck.cards.Count == 0)
+            for (int i = 0; i < cardCount; i++)
             {
-                foreach (KeyValuePair<int, Card> card in battle.discardMap)
+                if (battle.deck.cards.Count == 0)
                 {
-                    battle.deck.cards.Add(card.Value);
-                    battle.discardMap.Remove(card.Key);
+                    foreach (KeyValuePair<int, Card> card in battle.discardMap)
+                    {
+                        battle.deck.cards.Add(card.Value);
+                        battle.discardMap.Remove(card.Key);
+                    }
+
+                    ShuffleDeck(battle.deck);
                 }
 
-                ShuffleDeck(battle.deck);
+                Card drawnCard = battle.deck.cards[0];
+
+                battle.deck.cards.Remove(drawnCard);
+                battle.handMap.Add(drawnCard.id, drawnCard);
             }
-
-            Card drawnCard = battle.deck.cards[0];
-            battle.deck.cards.Remove(drawnCard);
-
-            return drawnCard;
         }
 
         public static bool Exists(Client client, int cardId)

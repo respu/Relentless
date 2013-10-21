@@ -174,9 +174,7 @@ namespace Relentless.Handlers
                 {
                     case "DrawScrollOnEnterBoard":
                         {
-                            Card card = CardAPI.DrawCard(battle);
-                            battle.handMap.Add(card.id, card);
-
+                            CardAPI.DrawCard(battle, 1);
                             break;
                         }
                     case "GravelockStrengthModifier":

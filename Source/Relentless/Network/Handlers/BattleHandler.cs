@@ -39,13 +39,7 @@ namespace Relentless.Network
                         }
 
                         CardAPI.ShuffleDeck(battle.deck);
-
-                        for (int i = 0; i < 5; i++)
-                        {
-                            Card card = CardAPI.DrawCard(battle);
-
-                            battle.handMap.Add(card.id, card);
-                        }
+                        CardAPI.DrawCard(battle, 5);
 
                         ActiveResources activeResources = new ActiveResources();
 
@@ -66,9 +60,7 @@ namespace Relentless.Network
                     {
                         if (battle.turn != 1)
                         {
-                            Card card = CardAPI.DrawCard(battle);
-
-                            battle.handMap.Add(card.id, card);
+                            CardAPI.DrawCard(battle, 1);
                         }
 
                         BattleAPI.UpdateHand(client, battle);
@@ -347,11 +339,7 @@ namespace Relentless.Network
 
                 if (sacrificeCard.resource == "cards")
                 {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        Card card = CardAPI.DrawCard(battle);
-                        battle.handMap.Add(card.id, card);
-                    }
+                    CardAPI.DrawCard(battle, 2);
                 }
                 else
                 {
