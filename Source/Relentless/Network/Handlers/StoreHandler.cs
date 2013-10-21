@@ -114,7 +114,8 @@ namespace Relentless.Network
 
             if (!saleError)
             {
-                DB.Database.Execute(client.connection, true, true, "UPDATE server_stats SET totalSoldCards = totalSoldCards + ?", sellCards.cardIds.Count); 
+                int lastId;
+                DB.Database.Execute(client.connection, out lastId, true, true, "UPDATE server_stats SET totalSoldCards = totalSoldCards + ?", sellCards.cardIds.Count); 
 
                 PlayerAPI.IncreaseGold(client, totalGold);
                 PlayerAPI.UpdateScrollTypeCount(client);

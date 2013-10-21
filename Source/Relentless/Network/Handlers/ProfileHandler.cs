@@ -24,7 +24,8 @@ namespace Relentless.Network
             if (Variables.avatarTypeMap.ContainsKey(avatarSave.head) && Variables.avatarTypeMap.ContainsKey(avatarSave.body) && Variables.avatarTypeMap.ContainsKey(avatarSave.leg) && 
                     Variables.avatarTypeMap.ContainsKey(avatarSave.armBack) && Variables.avatarTypeMap.ContainsKey(avatarSave.armFront))
             {
-                DB.Database.Execute(client.connection, true, true, "UPDATE account_avatar SET head = ?, body = ?, leg = ?, armBack = ?, armFront = ? WHERE guid = ?",
+                int lastId;
+                DB.Database.Execute(client.connection, out lastId, true, true, "UPDATE account_avatar SET head = ?, body = ?, leg = ?, armBack = ?, armFront = ? WHERE guid = ?",
                     avatarSave.head, avatarSave.body, avatarSave.leg, avatarSave.armBack, avatarSave.armFront, client.account.id);
             }
             else
@@ -127,6 +128,7 @@ namespace Relentless.Network
         {
             client.packetMap.Remove("SelectPreconstructed");
 
+            int lastId;
             string cards   = "";
             int resourceId = 0;
 
@@ -146,12 +148,12 @@ namespace Relentless.Network
 
             foreach (int cardType in cardTypeList)
             {
-                DB.Database.Execute(client.connection, false, false, "INSERT INTO account_cards VALUES (0, ?, ?, 0, 0, 0);", client.account.id, cardType);
+                DB.Database.Execute(client.connection, out lastId, false, false, "INSERT INTO account_cards VALUES (0, ?, ?, 0, 0, 0);", client.account.id, cardType);
 
-                cards += DB.Database.lastId + "|";
+                cards += lastId + "|";
 
                 Card card = new Card();
-                card.id       = DB.Database.lastId;
+                card.id       = lastId;
                 card.typeId   = cardType;
                 card.tradable = false;
                 card.isToken  = false;
@@ -161,7 +163,7 @@ namespace Relentless.Network
                 client.account.cardMap.Add(card.id, card);
             }
 
-            DB.Database.Execute(client.connection, false, false, "INSERT INTO account_decks VALUES (0, ?, ?, ?, ?, \"\", ?, 1);", client.account.id, deck.name, selectPreconstructed.resourceType, deck.timestamp, cards.TrimEnd('|'));
+            DB.Database.Execute(client.connection, out lastId, false, false, "INSERT INTO account_decks VALUES (0, ?, ?, ?, ?, \"\", ?, 1);", client.account.id, deck.name, selectPreconstructed.resourceType, deck.timestamp, cards.TrimEnd('|'));
 
             switch (selectPreconstructed.resourceType)
             {
@@ -171,7 +173,7 @@ namespace Relentless.Network
                 case "ORDER":  { resourceId = 3; break; }
             }
 
-            DB.Database.Execute(client.connection, false, true, "UPDATE account_data SET selectedPreconstructed = ? WHERE guid = ?", resourceId, client.account.id);
+            DB.Database.Execute(client.connection, out lastId, false, true, "UPDATE account_data SET selectedPreconstructed = ? WHERE guid = ?", resourceId, client.account.id);
 
             client.account.deckMap.Add(deck.name, deck);
 

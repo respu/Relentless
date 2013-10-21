@@ -11,10 +11,11 @@ namespace Relentless.API
     {
         public static Card AddCard(Client client, CardType cardType)
         {
-            DB.Database.Execute(client.connection, true, true, "INSERT INTO account_cards VALUES (0, ?, ?, 1, 0, 0);", client.account.id, cardType.id);
+            int lastId;
+            DB.Database.Execute(client.connection, out lastId, true, true, "INSERT INTO account_cards VALUES (0, ?, ?, 1, 0, 0);", client.account.id, cardType.id);
 
             Card card = new Card();
-            card.id       = DB.Database.lastId;
+            card.id       = lastId;
             card.typeId   = cardType.id;
             card.tradable = true;
             card.isToken  = false;
@@ -72,11 +73,14 @@ namespace Relentless.API
         public static void RemoveCard(Client client, int cardId)
         {
             client.account.cardMap.Remove(cardId);
-            DB.Database.Execute(client.connection, true, true, "DELETE FROM account_cards WHERE id = ?", cardId);
+
+            int lastId;
+            DB.Database.Execute(client.connection, out lastId, true, true, "DELETE FROM account_cards WHERE id = ?", cardId);
         }
 
         public static void RemoveCardFromDecks(Client client, int cardId)
         {
+            int lastId;
             bool cardFound = false;
 
             foreach (KeyValuePair<string, Deck> deck in client.account.deckMap.ToArray())
@@ -102,12 +106,12 @@ namespace Relentless.API
                             newCardString += deckCard.id;
                         }
 
-                        DB.Database.Execute(client.connection, true, true, "UPDATE account_decks SET cards = ? WHERE guid = ? AND name = ?", newCardString, client.account.id, client.account.username);
+                        DB.Database.Execute(client.connection, out lastId, true, true, "UPDATE account_decks SET cards = ? WHERE guid = ? AND name = ?", newCardString, client.account.id, client.account.username);
                     }
                     else
                     {
                         client.account.deckMap.Remove(deck.Value.name);
-                        DB.Database.Execute(client.connection, true, true, "DELETE FROM account_decks WHERE guid = ? AND name = ?", client.account.id, deck.Value.name);
+                        DB.Database.Execute(client.connection, out lastId, true, true, "DELETE FROM account_decks WHERE guid = ? AND name = ?", client.account.id, deck.Value.name);
                     }
                 }
             }
@@ -123,7 +127,8 @@ namespace Relentless.API
             newOwner.account.cardMap.Add(cardId, CardAPI.GetCard(owner, cardId));
             owner.account.cardMap.Remove(cardId);
 
-            DB.Database.Execute(owner.connection, true, true, "UPDATE account_cards SET guid = ? WHERE id = ? AND guid = ?", newOwner.account.id, cardId, owner.account.id);
+            int lastId;
+            DB.Database.Execute(owner.connection, out lastId, true, true, "UPDATE account_cards SET guid = ? WHERE id = ? AND guid = ?", newOwner.account.id, cardId, owner.account.id);
         }
     }
 }

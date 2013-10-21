@@ -248,7 +248,8 @@ namespace Relentless.Network
 
                     Variables.sessionMap.Add(client.account.username, client);
 
-                    DB.Database.Execute(client.connection, false, false, "UPDATE account SET signedIn = 1 WHERE guid = ?", client.account.id);
+                    int lastId;
+                    DB.Database.Execute(client.connection, out lastId, false, false, "UPDATE account SET signedIn = 1 WHERE guid = ?", client.account.id);
 
                     client.account.authenticated = true;
                     client.connection.Close();

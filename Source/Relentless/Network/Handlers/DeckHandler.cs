@@ -52,7 +52,8 @@ namespace Relentless.Network
 
             if (client.account.deckMap.ContainsKey(deckDelete.name))
             {
-                DB.Database.Execute(client.connection, true, true, "DELETE FROM account_decks WHERE guid = ? AND name = ?", client.account.id, deckDelete.name);
+                int lastId;
+                DB.Database.Execute(client.connection, out lastId, true, true, "DELETE FROM account_decks WHERE guid = ? AND name = ?", client.account.id, deckDelete.name);
 
                 client.account.deckMap.Remove(deckDelete.name);
                 
@@ -116,6 +117,7 @@ namespace Relentless.Network
         {
             client.packetMap.Remove("DeckSave");
 
+            int lastId;
             bool deckValidated = true;
             string failMessage = "";
 
@@ -165,14 +167,14 @@ namespace Relentless.Network
 
                 if (client.account.deckMap.ContainsKey(deck.name))
                 {
-                    DB.Database.Execute(client.connection, true, true, "UPDATE account_decks SET name = ?, resources = ?, timestamp = ?, metadata = ?, cards = ?, valid = ? WHERE guid = ? AND name = ?",
+                    DB.Database.Execute(client.connection, out lastId, true, true, "UPDATE account_decks SET name = ?, resources = ?, timestamp = ?, metadata = ?, cards = ?, valid = ? WHERE guid = ? AND name = ?",
                         deck.name, resources.TrimEnd('|'), deck.timestamp, deck.metadata, cards.TrimEnd('|'), deck.valid, client.account.id, deck.name);
 
                     client.account.deckMap.Remove(deck.name);
                 }
                 else
                 {
-                    DB.Database.Execute(client.connection, true, true, "INSERT INTO account_decks VALUES (0, ?, ?, ?, ?, ?, ?, ?);",
+                    DB.Database.Execute(client.connection, out lastId, true, true, "INSERT INTO account_decks VALUES (0, ?, ?, ?, ?, ?, ?, ?);",
                         client.account.id, deck.name, resources.TrimEnd('|'), deck.timestamp, deck.metadata, cards.TrimEnd('|'), deck.valid);
                 }
 

@@ -201,7 +201,9 @@ namespace Relentless
         public static void Database()
         {
             DB.Database.Connect(Variables.connection);
-            DB.Database.Execute(Variables.connection, false, false, "UPDATE account SET signedIn = 0 WHERE signedIn = 1");
+
+            int lastId;
+            DB.Database.Execute(Variables.connection, out lastId, false, false, "UPDATE account SET signedIn = 0 WHERE signedIn = 1");
         }
 
         public static void Network()

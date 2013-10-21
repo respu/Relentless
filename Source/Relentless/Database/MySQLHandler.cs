@@ -17,7 +17,6 @@ namespace Relentless.Database
     public class MySQLHandler
     {
         public int rowCount;
-        public int lastId;
         public static string connectionString = "Server=" + ConfigReader.mysqlHost + ";User Id=" + ConfigReader.mysqlUsername + ";Port=" + ConfigReader.mysqlPort + ";" +
                                                 "Password=" + ConfigReader.mysqlPassword + ";Database=" + ConfigReader.mysqlDatabase + ";Allow Zero Datetime=True;" +
                                                 "Pooling=False;CharSet=utf8";
@@ -38,8 +37,10 @@ namespace Relentless.Database
             }
         }
 
-        public bool Execute(MySqlConnection connection, bool openConnection, bool closeConnection, string sql, params object[] args)
+        public bool Execute(MySqlConnection connection, out int lastId, bool openConnection, bool closeConnection, string sql, params object[] args)
         {
+            lastId = 0;
+
             if (openConnection == true)
             {
                 connection.Open();

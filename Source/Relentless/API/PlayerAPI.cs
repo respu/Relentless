@@ -30,7 +30,9 @@ namespace Relentless.API
         public static void IncreaseGold(Client client, int amount)
         {
             client.account.gold += amount;
-            DB.Database.Execute(client.connection, true, true, "UPDATE account_data SET gold = ? WHERE guid = ?", client.account.gold, client.account.id);
+
+            int lastId;
+            DB.Database.Execute(client.connection, out lastId, true, true, "UPDATE account_data SET gold = ? WHERE guid = ?", client.account.gold, client.account.id);
         }
 
         public static bool IsOnline(string name)
@@ -58,13 +60,17 @@ namespace Relentless.API
         public static void RemoveGold(Client client, int amount)
         {
             client.account.gold -= amount;
-            DB.Database.Execute(client.connection, true, true, "UPDATE account_data SET gold = ? WHERE guid = ?", client.account.gold, client.account.id);
+
+            int lastId;
+            DB.Database.Execute(client.connection, out lastId, true, true, "UPDATE account_data SET gold = ? WHERE guid = ?", client.account.gold, client.account.id);
         }
 
         public static void RemoveShards(Client client, int amount)
         {
             client.account.shards -= amount;
-            DB.Database.Execute(client.connection, true, true, "UPDATE account_data SET shards = ? WHERE guid = ?", client.account.shards, client.account.id);
+
+            int lastId;
+            DB.Database.Execute(client.connection, out lastId, true, true, "UPDATE account_data SET shards = ? WHERE guid = ?", client.account.shards, client.account.id);
         }
 
         public static void UpdateScrollTypeCount(Client client)

@@ -92,7 +92,8 @@ namespace Relentless.Network
                     }
                 }
 
-                DB.Database.Execute(connection, true, true, "UPDATE account SET signedIn = 0 WHERE guid = ?", account.id);
+                int lastId;
+                DB.Database.Execute(connection, out lastId, true, true, "UPDATE account SET signedIn = 0 WHERE guid = ?", account.id);
 
                 Variables.sessionMap.Remove(account.username);
                 connection.Dispose();
