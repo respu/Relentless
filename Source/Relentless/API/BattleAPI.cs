@@ -280,10 +280,7 @@ namespace Relentless.API
 
         public static void TurnBegin(Client client, Battle battle)
         {
-            Battle opponentBattle = GetOpponentBattle(battle);
-
             battle.turn++;
-            opponentBattle.turn++;
 
             NewEffects newEffects = new NewEffects();
 
@@ -292,8 +289,12 @@ namespace Relentless.API
 
             turnBeginEffect.TurnBegin.turn = battle.turn;
 
+            Battle opponentBattle = GetOpponentBattle(battle);
+
             if (battle.turn != 1)
             {
+                opponentBattle.turn++;
+
                 if (battle.turnColor == "white")
                 {
                     battle.turnColor         = "black";
@@ -309,18 +310,14 @@ namespace Relentless.API
                     turnBeginEffect.TurnBegin.color = "white";
                 }
             }
-            else
-            {
-                turnBeginEffect.TurnBegin.color = battle.turnColor;
-            }
+            else { turnBeginEffect.TurnBegin.color = battle.turnColor; }
 
             newEffects.effects.Add(turnBeginEffect);
-
             client.Send(newEffects);
 
             if (battle.turn != 1)
             {
-                BattleAPI.GetOpponentClient(battle).Send(newEffects);
+                GetOpponentClient(battle).Send(newEffects);
             }
         }
 
